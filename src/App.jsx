@@ -1,12 +1,11 @@
-import './App.css'
+import { Outlet } from 'react-router'
 
 function App() {
 
   return (
     <>
-      <p className="TaskFlow">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h1>TaskFlow</h1>
+      <Outlet></Outlet>
     </>
   )
 }
