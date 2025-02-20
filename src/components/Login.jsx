@@ -8,7 +8,6 @@ import axios from "axios";
 import { APIcontext } from "../contexts/APIprovider";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-
 const Login = () => {
   const {
     register,
@@ -22,17 +21,11 @@ const Login = () => {
   const API = useContext(APIcontext);
   const [showPassword, setShowPassword] = useState(false);
 
-
   const handleLoginWithGoogle = () => {
     setLoading(true);
     createWithGoogle()
       .then((userCredential) => {
         setUser(userCredential.user);
-        axios
-          .post(`${API}/jwt`, userCredential.user.email, {
-            withCredentials: true,
-          })
-          .then(res => sessionStorage.setItem('authToken', res.data?.token));
         navigate("/");
         toast.success(`Login Successful`, {
           position: "top-left",
@@ -56,8 +49,9 @@ const Login = () => {
         axios
           .post(`${API}/jwt`, userCredential.user.email, {
             withCredentials: true,
-          }).then(res => sessionStorage.setItem('authToken', res.data?.token))
-          
+          })
+          .then((res) => sessionStorage.setItem("authToken", res.data?.token));
+
         toast.success("Login Successful!", {
           position: "top-left",
           autoClose: 2000,
@@ -87,69 +81,72 @@ const Login = () => {
   }
 
   return (
-    // <div className="grid md:grid-cols-2 gap-4 items-center min-h-screen bg-secondary px-3">
-    //   <div className="w-full md:w-3/4 lg:w-2/3 mx-auto p-8 bg-primary text-white rounded-xl shadow-lg">
-    //     <h1 className="text-4xl font-bold mb-6 text-center">JOIN US</h1>
+    <div className="flex items-center justify-center py-4 md:px-24 px-6">
+      <div className="w-full md:w-1/2 bg-primary">
+        <div className="bg-blue-500 w-full p-4 text-white font-semibold text-lg text-center rounded-t-2xl">
+          <h1>Create an Account</h1>
+        </div>
 
-    //     <form
-    //       onSubmit={handleSubmit(handleLoginWithEmail)}
-    //       className="space-y-6"
-    //     >
-    //       <div>
-    //         <input
-    //           type="text"
-    //           name="email"
-    //           placeholder="Email"
-    //           {...register("email", { required: "Email is required" })}
-    //           className="w-full p-3 rounded-lg bg-secondary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    //         />
-    //         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-    //       </div>
+        <form
+          onSubmit={handleSubmit(handleLoginWithEmail)}
+          className="space-y-6 p-4"
+        >
+          <div>
+            <input
+              type="text"
+              name="email"
+              placeholder="Email"
+              {...register("email", { required: "Email is required" })}
+              className="w-full p-3 rounded-lg bg-secondary text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
+          </div>
 
-    //       <div className="relative">
-    //         <input
-    //           type={showPassword ? "text" : "password"}
-    //           name="password"
-    //           placeholder="Password"
-    //           {...register("password", { required: "Password is required" })}
-    //           className="w-full p-3 rounded-lg bg-secondary text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    //         />
-    //         <span
-    //           className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl text-gray-300"
-    //           onClick={() => setShowPassword(!showPassword)}
-    //         >
-    //           {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-    //         </span>
-    //         {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-    //       </div>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              {...register("password", { required: "Password is required" })}
+              className="w-full p-3 rounded-lg bg-secondary text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <span
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl text-gray-500 hover:text-gray-700 transition-all duration-300"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+            </span>
+            {errors.password && (
+              <p className="text-red-500 text-sm">{errors.password.message}</p>
+            )}
+          </div>
 
-    //       <input
-    //         type="submit"
-    //         value="Login"
-    //         className="w-full py-3 bg-blue-600 text-white font-bold rounded-lg cursor-pointer hover:bg-blue-700 transition-all duration-300"
-    //       />
+          <input
+            type="submit"
+            value="Login"
+            className="w-full py-3 bg-blue-600 text-white font-bold rounded-lg cursor-pointer hover:bg-blue-700 transition-all duration-300"
+          />
 
-    //       <p className="mt-4 text-center text-sm">
-    //         Don&apos;t have an account?{" "}
-    //         <span
-    //           className="text-blue-600 cursor-pointer font-bold"
-    //           onClick={() => navigate("/register")}
-    //         >
-    //           Register
-    //         </span>
-    //       </p>
-    //     </form>
+          <button
+            onClick={handleLoginWithGoogle}
+            className="w-full  py-3 bg-red-600 text-white font-bold rounded-lg cursor-pointer hover:bg-red-700 transition-all duration-300 flex items-center justify-center"
+          >
+            Login with Google
+          </button>
 
-    //     <button
-    //       onClick={handleLoginWithGoogle}
-    //       className="w-full mt-4 py-3 bg-red-600 text-white font-bold rounded-lg cursor-pointer hover:bg-red-700 transition-all duration-300 flex items-center justify-center"
-    //     >
-    //       Login with Google
-    //     </button>
-    //   </div>
-    // </div>
-    <div>
-        Login
+          <p className="mt-4 text-center text-sm">
+            Don&apos;t have an account?{" "}
+            <span
+              className="text-blue-600 cursor-pointer font-bold"
+              onClick={() => navigate("/register")}
+            >
+              Register
+            </span>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };
