@@ -1,23 +1,19 @@
 import PropTypes from "prop-types";
+import Task from "./Task";
 
 const ToDo = ({ tasks }) => {
-    return (
-        <div>
-            To Do
-            {
-                tasks.map(task => (
-                    <div key={task._id}>
-                        <h3>{task.title}</h3>
-                        <p>{task.description}</p>
-                    </div>
-                ))
-            }
-        </div>
-    );
+  return (
+    <div>
+      To Do
+      {tasks.map((task) => (
+        <Task key={task._id} task={task} />
+      ))}
+    </div>
+  );
 };
 
 ToDo.propTypes = {
-    tasks: PropTypes.array.isRequired,
+  tasks: PropTypes.array.isRequired,
 };
 
 export default ToDo;
