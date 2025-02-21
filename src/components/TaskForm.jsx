@@ -4,12 +4,15 @@ import { useForm, Controller } from 'react-hook-form';
 import Modal from 'react-modal';
 import { useContext, useState } from "react";
 import { APIcontext } from "../contexts/APIprovider";
+import {AuthContext} from '../contexts/AuthProvider';
 
 const TaskForm = () => {
     const API = useContext(APIcontext);
+    const { user } = useContext(AuthContext); 
+    const currentDate = new Date();
     const { postTask, loading, error, data } = usePostTask(API);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    
+       
 
     const {
         control,
@@ -21,6 +24,8 @@ const TaskForm = () => {
           title: '',
           description: '',
           category: 'To-Do',
+          user: `${user.email}`,
+          currentDate: `${currentDate}`,
         },
       });
     
@@ -118,7 +123,7 @@ const TaskForm = () => {
             )}
           </div>
 
-          <div>
+          {/* <div>
             <label>Category:</label>
             <Controller
               name="category"
@@ -131,7 +136,7 @@ const TaskForm = () => {
                 </select>
               )}
             />
-          </div>
+          </div> */}
 
           <button type="submit" disabled={loading}>
             {loading ? 'Creating Task...' : 'Create Task'}
