@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import auth from "../../firebase.config";
 import PropTypes from "prop-types";
@@ -48,12 +49,16 @@ const AuthProvider = ({ children }) => {
     return userCredential;
   };
 
-  const createWithEmail = async (email, password) => {
+  const createWithEmail = async (email, password, displayName) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
+
+    await updateProfile(userCredential.user, {
+      displayName: displayName,
+    });
 
     return userCredential;
   };

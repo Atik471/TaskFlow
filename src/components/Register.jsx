@@ -32,7 +32,11 @@ const Register = () => {
             name: userCredential.user.displayName,
             uid: userCredential.user.uid,
           })
-          .then((res) => console.log(res.data))
+          .then(() => console.log({
+            email: userCredential.user.email,
+            name: userCredential.user.displayName,
+            uid: userCredential.user.uid,
+          }))
           .catch((err) => console.log(err));
         navigate("/");
         toast.success("Registration Successful!", {
@@ -72,7 +76,6 @@ const Register = () => {
         data.email,
         data.password,
         data.name,
-        data.photoURL
       );
       setUser(userCredential.user);
       axios
@@ -81,7 +84,7 @@ const Register = () => {
           name: userCredential.user.displayName,
           uid: userCredential.user.uid,
         })
-        .then((res) => console.log(res.data))
+        .then(() => console.log(userCredential))
         .catch((err) => console.log(err));
       toast.success("Registration Successful!", {
         position: "top-left",
@@ -127,6 +130,19 @@ const Register = () => {
             />
             {errors.email && (
               <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
+          </div>
+
+          <div>
+            <input
+              type="text"
+              name="name"
+              placeholder="Username"
+              {...register("name", { required: "Username is required" })}
+              className="w-full p-3 rounded-lg bg-secondary text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name.message}</p>
             )}
           </div>
 
