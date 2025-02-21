@@ -29,6 +29,7 @@ const Navbar = () => {
       </div>
       {user && (
         <div>
+          <p>{user.displayName}</p>
           <button
             className="px-4 py-2 bg-secondary text-white rounded-lg cursor-pointer"
             onClick={handleLogout}
