@@ -24,20 +24,23 @@ const Register = () => {
   const handleRegisterWithGoogle = () => {
     setLoading(true);
     createWithGoogle()
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         setUser(userCredential.user);
-        axios
-          .post(`${API}/users/register`, {
+
+        const email = userCredential.user.email;
+
+        const fetchedData = await axios.get(
+          `${API}/users/${email}`
+        );
+
+        if (!fetchedData.data) {
+          await axios.post(`${API}/users/register`, {
             email: userCredential.user.email,
             name: userCredential.user.displayName,
             uid: userCredential.user.uid,
-          })
-          .then(() => console.log({
-            email: userCredential.user.email,
-            name: userCredential.user.displayName,
-            uid: userCredential.user.uid,
-          }))
-          .catch((err) => console.log(err));
+          });
+        }
+
         navigate("/");
         toast.success("Registration Successful!", {
           position: "top-left",
@@ -84,7 +87,7 @@ const Register = () => {
           name: userCredential.user.displayName,
           uid: userCredential.user.uid,
         })
-        .then(() => console.log(userCredential))
+        .then((res) => console.log(res.data))
         .catch((err) => console.log(err));
       toast.success("Registration Successful!", {
         position: "top-left",

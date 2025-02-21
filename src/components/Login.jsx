@@ -24,8 +24,22 @@ const Login = () => {
   const handleLoginWithGoogle = () => {
     setLoading(true);
     createWithGoogle()
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         setUser(userCredential.user);
+
+        const email = userCredential.user.email;
+
+        const fetchedData = await axios.get(
+          `${API}/users/${email}`
+        );
+
+        if (!fetchedData.data) {
+          await axios.post(`${API}/users/register`, {
+            email: userCredential.user.email,
+            name: userCredential.user.displayName,
+            uid: userCredential.user.uid,
+          });
+        }
         navigate("/");
         toast.success(`Login Successful`, {
           position: "top-left",
@@ -46,11 +60,6 @@ const Login = () => {
     signInWithEmail(data.email, data.password)
       .then((userCredential) => {
         setUser(userCredential.user);
-        axios
-          .post(`${API}/jwt`, userCredential.user.email, {
-            withCredentials: true,
-          })
-          .then((res) => sessionStorage.setItem("authToken", res.data?.token));
 
         toast.success("Login Successful!", {
           position: "top-left",
@@ -84,7 +93,7 @@ const Login = () => {
     <div className="flex items-center justify-center py-4 md:px-24 px-6">
       <div className="w-full md:w-1/2 bg-primary">
         <div className="bg-blue-500 w-full p-4 text-white font-semibold text-lg text-center rounded-t-2xl">
-          <h1>Create an Account</h1>
+          <h1>Login</h1>
         </div>
 
         <form
