@@ -1,31 +1,25 @@
-import axios from "axios";
 import Done from "./Done";
 import InProgress from "./InProgress";
 import TaskForm from "./TaskForm";
 import ToDo from "./ToDo";
-import { useContext, useState } from "react";
-import { APIcontext } from "../contexts/APIprovider";
-
+import { useContext } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { Taskcontext } from "../contexts/TaskProvider";
 
 const Home = () => {
-    const [tasks, setTasks] = useState([]);
-    const API = useContext(APIcontext);
+  const { inProgressTasks, doneTasks } = useContext(Taskcontext);
 
-    axios.get(`${API}/tasks`)
-    .then(res => setTasks(res.data))
-    .catch(err => console.log(err));
-
-    const todoTasks = tasks
-  .filter(task => task.category === 'To-Do') || [];
-
-    return (
-        <div>
-            <TaskForm />
-            <ToDo tasks={todoTasks} />
-            <InProgress />
-            <Done />
-        </div>
-    );
+  return (
+    <div>
+      <TaskForm />
+      <DndProvider backend={HTML5Backend}>
+        <ToDo />
+        <InProgress tasks={inProgressTasks} />
+        <Done tasks={doneTasks} />
+      </DndProvider>
+    </div>
+  );
 };
 
 export default Home;

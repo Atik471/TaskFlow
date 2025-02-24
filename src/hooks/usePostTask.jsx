@@ -11,7 +11,6 @@ const usePostTask = (API) => {
     setError(null);
     setData(null);
 
-    console.log(`${API}/tasks`);
     try {
       const response = await axios.post(`${API}/tasks`, taskData);
       setData(response.data);
